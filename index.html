@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>🌤️ Weather Dashboard</h1>
+        </header>
+        
+        <!-- Modal 1: Location Search -->
+        <div class="modal search-modal">
+            <div class="modal-header">
+                <h2>📍 Location Search</h2>
+            </div>
+            <div class="modal-content">
+                <div class="input-container">
+                    <input type="text" id="locationInput" placeholder="Enter city, state or ZIP code (e.g., Baxter, IA)" />
+                    <button id="searchBtn">Go</button>
+                </div>
+                
+                <div id="weatherDisplay" class="weather-display hidden">
+                    <div class="location-info">
+                        <h3 id="locationName">City Name</h3>
+                        <p id="currentDate"></p>
+                    </div>
+                    
+                    <div class="current-weather">
+                        <div class="temperature">
+                            <span id="temperature">--°</span>
+                            <span id="weatherIcon">🌤️</span>
+                        </div>
+                        <div class="weather-details">
+                            <p id="description">Clear sky</p>
+                            <p>Feels like: <span id="feelsLike">--°</span></p>
+                            <p>Humidity: <span id="humidity">--%</span></p>
+                            <p>Wind: <span id="windSpeed">-- mph</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="errorMessage" class="error hidden">
+                    Location not found. Please try again.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal 2: Live Radar -->
+        <div id="radarModal" class="modal radar-modal hidden">
+            <div class="modal-header">
+                <h2>🌧️ Live Radar</h2>
+            </div>
+            <div class="modal-content">
+                <div id="radarMap"></div>
+            </div>
+        </div>
+        
+        <!-- Modal 3: 5-Day Forecast -->
+        <div id="forecastModal" class="modal forecast-modal hidden">
+            <div class="modal-header">
+                <h2>📅 5-Day Forecast</h2>
+            </div>
+            <div class="modal-content">
+                <div id="forecastContainer" class="forecast-container"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# API Keys and sensitive files
+Weather_API_Key.rtf
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Netlify build files
+.netlify/
+
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Build outputs
+dist/
+.cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
