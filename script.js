@@ -1,6 +1,6 @@
-// Use Netlify Functions instead of direct API calls
-const WEATHER_FUNCTION_URL = '/.netlify/functions/weather';
-const FORECAST_FUNCTION_URL = '/.netlify/functions/forecast';
+// Use Cloudflare Workers instead of Netlify Functions
+const WEATHER_FUNCTION_URL = '/weather';
+const FORECAST_FUNCTION_URL = '/forecast';
 
 const locationInput = document.getElementById('locationInput');
 const searchBtn = document.getElementById('searchBtn');
@@ -44,7 +44,7 @@ async function getWeatherData(location) {
     try {
         showLoading();
         
-        // Call our Netlify function instead of OpenWeatherMap directly
+        // Call our Cloudflare Worker instead of OpenWeatherMap directly
         const url = `${WEATHER_FUNCTION_URL}?location=${encodeURIComponent(location)}`;
         const response = await fetch(url);
         
@@ -130,7 +130,7 @@ function handleSearch() {
         return;
     }
     
-    // No API key check needed - handled by Netlify function
+    // No API key check needed - handled by Cloudflare Worker
     
     getWeatherData(location);
 }
@@ -189,7 +189,7 @@ function initializeRadar(lat, lon) {
 
 async function getForecastData(location) {
     try {
-        // Call our Netlify function instead of OpenWeatherMap directly
+        // Call our Cloudflare Worker instead of OpenWeatherMap directly
         const url = `${FORECAST_FUNCTION_URL}?location=${encodeURIComponent(location)}`;
         const response = await fetch(url);
         
