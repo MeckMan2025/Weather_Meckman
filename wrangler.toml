@@ -1,9 +1,0 @@
-# This project is now set up for Cloudflare Pages
-# The _worker.js file will automatically handle /weather and /forecast API routes
-# Your static files (index.html, style.css, script.js) will be served by Pages
-# 
-# To deploy:
-# 1. Create a new Cloudflare Pages project
-# 2. Connect your GitHub repository
-# 3. Set build output directory to: /
-# 4. Set OPENWEATHER_API_KEY as an environment variable in Pages settings
