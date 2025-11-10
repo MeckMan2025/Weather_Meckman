@@ -1,0 +1,6 @@
+name = "meckman-weather"
+main = "worker.js"
+compatibility_date = "2025-11-10"
+
+[vars]
+# Set OPENWEATHER_API_KEY in the Cloudflare dashboard or via wrangler secret put OPENWEATHER_API_KEY
