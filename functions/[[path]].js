@@ -1,44 +1,44 @@
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const pathname = url.pathname;
+export async function onRequest(context) {
+  const { request, env } = context;
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+  
+  // CORS headers
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  };
+
+  // Handle preflight requests
+  if (request.method === 'OPTIONS') {
+    return new Response('', {
+      status: 200,
+      headers: corsHeaders,
+    });
+  }
+
+  try {
+    // Route to weather or forecast handler
+    if (pathname === '/weather') {
+      return await handleWeather(request, env, corsHeaders);
+    } else if (pathname === '/forecast') {
+      return await handleForecast(request, env, corsHeaders);
+    }
     
-    // CORS headers
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    };
-
-    // Handle preflight requests
-    if (request.method === 'OPTIONS') {
-      return new Response('', {
-        status: 200,
-        headers: corsHeaders,
-      });
-    }
-
-    try {
-      // Route to weather or forecast handler
-      if (pathname === '/weather') {
-        return await handleWeather(request, env, corsHeaders);
-      } else if (pathname === '/forecast') {
-        return await handleForecast(request, env, corsHeaders);
+    // Let Pages try to serve static files
+    return context.next();
+  } catch (error) {
+    console.error('Function error:', error);
+    return new Response(
+      JSON.stringify({ error: 'Internal server error' }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
-      
-      return new Response('Not found', { status: 404, headers: corsHeaders });
-    } catch (error) {
-      console.error('Worker error:', error);
-      return new Response(
-        JSON.stringify({ error: 'Internal server error' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
-    }
-  },
-};
+    );
+  }
+}
 
 async function handleWeather(request, env, corsHeaders) {
   const url = new URL(request.url);
