@@ -5,4 +5,5 @@
 # To deploy:
 # 1. Create a new Cloudflare Pages project
 # 2. Connect your GitHub repository
-# 3. Set OPENWEATHER_API_KEY as an environment variable in Pages settings
+# 3. Set build output directory to: /
+# 4. Set OPENWEATHER_API_KEY as an environment variable in Pages settings
