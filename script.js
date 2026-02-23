@@ -21,6 +21,8 @@ const forecastContainer = document.getElementById('forecastContainer');
 
 let radarMap = null;
 
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
 const weatherIcons = {
     '01d': '☀️', '01n': '🌙', '02d': '⛅', '02n': '☁️',
     '03d': '☁️', '03n': '☁️', '04d': '☁️', '04n': '☁️',
@@ -221,13 +223,13 @@ function displayForecastData(data) {
         
         dayElement.innerHTML = `
             <div class="forecast-day-left">
-                <div class="forecast-day-name">${day.dayName}</div>
+                <div class="forecast-day-name">${escapeHtml(day.dayName)}</div>
                 <div class="forecast-icon">${weatherIcons[day.icon] || '🌤️'}</div>
-                <div class="forecast-desc">${day.description}</div>
+                <div class="forecast-desc">${escapeHtml(day.description)}</div>
             </div>
             <div class="forecast-temps">
-                <span class="forecast-high">${day.high}°</span>
-                <span class="forecast-low">${day.low}°</span>
+                <span class="forecast-high">${escapeHtml(String(day.high))}°</span>
+                <span class="forecast-low">${escapeHtml(String(day.low))}°</span>
             </div>
         `;
         

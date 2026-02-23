@@ -5,7 +5,7 @@ export async function onRequest(context) {
   
   // CORS headers
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://weather.meckman.org',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   };
@@ -43,10 +43,10 @@ export async function onRequest(context) {
 async function handleWeather(request, env, corsHeaders) {
   const url = new URL(request.url);
   const location = url.searchParams.get('location');
-  
-  if (!location) {
+
+  if (!location || location.length > 100) {
     return new Response(
-      JSON.stringify({ error: 'Location parameter is required' }),
+      JSON.stringify({ error: 'Invalid location' }),
       {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -68,24 +68,24 @@ async function handleWeather(request, env, corsHeaders) {
   }
 
   const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
-  
+
   // Build the API URL based on location format
   let apiUrl;
   if (/^\d{5}$/.test(location)) {
     // ZIP code format
-    apiUrl = `${API_URL}?zip=${location},US&appid=${API_KEY}&units=imperial`;
+    apiUrl = `${API_URL}?zip=${encodeURIComponent(location)},US&appid=${API_KEY}&units=imperial`;
   } else {
     // Check if location includes state (e.g., "Baxter, IA" or "Baxter, Iowa")
     const cityStatePattern = /^(.+),\s*([A-Za-z]{2,})$/;
     const match = location.match(cityStatePattern);
-    
+
     if (match) {
       const city = match[1].trim();
       const state = match[2].trim();
-      apiUrl = `${API_URL}?q=${city},${state},US&appid=${API_KEY}&units=imperial`;
+      apiUrl = `${API_URL}?q=${encodeURIComponent(city)},${encodeURIComponent(state)},US&appid=${API_KEY}&units=imperial`;
     } else {
       // Just city name - will default to most populous
-      apiUrl = `${API_URL}?q=${location},US&appid=${API_KEY}&units=imperial`;
+      apiUrl = `${API_URL}?q=${encodeURIComponent(location)},US&appid=${API_KEY}&units=imperial`;
     }
   }
 
@@ -113,10 +113,10 @@ async function handleWeather(request, env, corsHeaders) {
 async function handleForecast(request, env, corsHeaders) {
   const url = new URL(request.url);
   const location = url.searchParams.get('location');
-  
-  if (!location) {
+
+  if (!location || location.length > 100) {
     return new Response(
-      JSON.stringify({ error: 'Location parameter is required' }),
+      JSON.stringify({ error: 'Invalid location' }),
       {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -138,24 +138,24 @@ async function handleForecast(request, env, corsHeaders) {
   }
 
   const FORECAST_API_URL = 'https://api.openweathermap.org/data/2.5/forecast';
-  
+
   // Build the API URL based on location format
   let apiUrl;
   if (/^\d{5}$/.test(location)) {
     // ZIP code format
-    apiUrl = `${FORECAST_API_URL}?zip=${location},US&appid=${API_KEY}&units=imperial`;
+    apiUrl = `${FORECAST_API_URL}?zip=${encodeURIComponent(location)},US&appid=${API_KEY}&units=imperial`;
   } else {
     // Check if location includes state (e.g., "Baxter, IA" or "Baxter, Iowa")
     const cityStatePattern = /^(.+),\s*([A-Za-z]{2,})$/;
     const match = location.match(cityStatePattern);
-    
+
     if (match) {
       const city = match[1].trim();
       const state = match[2].trim();
-      apiUrl = `${FORECAST_API_URL}?q=${city},${state},US&appid=${API_KEY}&units=imperial`;
+      apiUrl = `${FORECAST_API_URL}?q=${encodeURIComponent(city)},${encodeURIComponent(state)},US&appid=${API_KEY}&units=imperial`;
     } else {
       // Just city name - will default to most populous
-      apiUrl = `${FORECAST_API_URL}?q=${location},US&appid=${API_KEY}&units=imperial`;
+      apiUrl = `${FORECAST_API_URL}?q=${encodeURIComponent(location)},US&appid=${API_KEY}&units=imperial`;
     }
   }
 

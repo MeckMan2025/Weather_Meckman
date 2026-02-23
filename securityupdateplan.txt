@@ -1,0 +1,34 @@
+MECKMAN WEATHER - SECURITY UPDATE PLAN
+========================================
+Date: 2026-02-22
+Overall Risk: HIGH (API key exposed in plaintext, multiple web vulnerabilities)
+
+CRITICAL
+--------
+[ ] 1. Rotate OpenWeatherMap API key immediately — plaintext in .env file syncing to iCloud
+[ ] 2. Delete Weather_API_Key.rtf — contains same API key in readable RTF doc, also syncing to iCloud
+[ ] 3. Delete .env from project directory — set key ONLY in Cloudflare Pages dashboard env vars
+[ ] 4. Delete .netlify/ directory — stale build artifacts leak local filesystem paths
+
+HIGH
+----
+[ ] 5. Lock CORS to actual domain — currently wildcard (*) in functions/[[path]].js, anyone can use your proxy
+[ ] 6. Add rate limiting on serverless weather proxy — no abuse protection, quota can be exhausted
+[ ] 7. Add server-side input validation on location parameter — unsanitized input passed to API URL
+
+MEDIUM
+------
+[ ] 8. Fix XSS in script.js — forecast section uses innerHTML with API data (lines 216-232), switch to textContent
+[ ] 9. Add SRI integrity hashes to Leaflet CDN resources in index.html (lines 8-9)
+[ ] 10. Add security headers via _headers file (CSP, X-Frame-Options, HSTS, X-Content-Type-Options)
+[ ] 11. Source map in .netlify/ leaks local path and username — delete .netlify/ (see #4)
+
+LOW
+---
+[ ] 12. Remove Bash(rm:*) from .claude/settings.local.json — overly broad destructive permission
+[ ] 13. Cloudflare analytics token in HTML — by design, but can be used to pollute analytics
+
+INFO
+----
+[ ] 14. Project on iCloud Drive — move to local-only directory
+[ ] 15. Update README.md — references old architecture and outdated setup instructions
